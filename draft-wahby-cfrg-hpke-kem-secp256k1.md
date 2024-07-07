@@ -85,8 +85,6 @@ Conversion functions in this section are defined in {{SEC1v2}}.
 - The SerializePublicKey() function uses the uncompressed Elliptic-Curve-Point-to-Octet-String conversion.
 
 - The DeserializePublicKey() function uses the uncompressed Octet-String-to-Elliptic-Curve-Point conversion.
-  Deserialized public keys MUST be validated before they can be used in a
-  manner analogous to the one for NIST-P256 in {{RFC9180}}, Section 7.1.4.
 
 - The SerializePrivateKey() function uses the Field-Element-to-Octet-String conversion.
   If the private key is an integer outside the range [0, order-1], where 'order' is
@@ -94,6 +92,10 @@ Conversion functions in this section are defined in {{SEC1v2}}.
   representative in [0, order-1].
 
 - The DeserializePrivateKey() function uses the Octet-String-to-Field-Element conversion.
+
+## Validation of Inputs and Outputs
+
+As with the NIST-P256 DHKEM, senders and recipients using the secp256k1 DHKEM MUST perform partial public key validation on all public key inputs, as defined in Section 5.6.2.3.4 of [keyagreement]. This includes checking that the coordinates are in the correct range, that the point is on the curve, and that the point is not the point at infinity. Additionally, senders and recipients MUST ensure the Diffie-Hellman shared secret is not the point at infinity.
 
 ## DeriveKeyPair
 
